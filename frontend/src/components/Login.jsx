@@ -24,8 +24,11 @@ const AuthForm = ({ fetchUser }) => {
       });
 
       console.log(response.data.message); // Display success message
-      fetchUser();
-      navigate("/document"); // Redirect to the document page
+
+      if (response.data.message) {
+        fetchUser();
+        navigate("/document"); // Redirect to the document page
+      }
     } catch (error) {
       console.error(error.response.data.message); // Handle errors
     }

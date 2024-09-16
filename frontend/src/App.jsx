@@ -13,20 +13,19 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const fetchUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/auth/me", {
+        withCredentials: true,
+      });
+      setUser(response.data);
+      setLoading(false);
+    } catch (error) {
+      setError("Unable to fetch user data.");
+      setLoading(false);
+    }
+  };
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/auth/me", {
-          withCredentials: true,
-        });
-        setUser(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError("Unable to fetch user data.");
-        setLoading(false);
-      }
-    };
-
     fetchUser();
   }, []);
 
@@ -36,7 +35,7 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login />,
+      element: <Login fetchUser={fetchUser} />,
     },
     {
       path: "about",
@@ -44,7 +43,7 @@ const App = () => {
     },
     {
       path: "document/:id?",
-      element: <Document user={user} />,
+      element: <Document fetchUser={fetchUser} user={user} />,
     },
   ]);
 
