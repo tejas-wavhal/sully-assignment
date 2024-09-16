@@ -19,9 +19,9 @@ const App = () => {
         withCredentials: true,
       });
       setUser(response.data);
-      setLoading(false);
     } catch (error) {
       setError("Unable to fetch user data.");
+    } finally {
       setLoading(false);
     }
   };
@@ -30,16 +30,11 @@ const App = () => {
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  // if (error) return <div>{error}</div>;
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Login fetchUser={fetchUser} />,
-    },
-    {
-      path: "about",
-      element: <div>About</div>,
     },
     {
       path: "document/:id?",
